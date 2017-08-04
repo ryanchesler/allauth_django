@@ -49,21 +49,33 @@ def home(request):
 
     friend_info = sorted(friend_info, key=itemgetter('friend_name'))
 
-    return render(request, 'home.html', {
-        'friend_info': friend_info,
-        'steam_id': steam_id,
-        'user': request.user.username
-    })
+    return render(request, 'home.html', {'friend_info': friend_info, 'steam_id': steam_id})
 
 def games(request):
-
+    # cursor = connection.cursor()
+    # if request.user.username :
+    #     user_name = request.user.username
+    # else:
+    #     user_name = "user30"
+    #
+    # cursor.execute("SELECT * FROM socialaccount_socialaccount ss, auth_user user "
+    #                "WHERE ss.user_id=user.id AND user.username='"+user_name+"' ")
+    #
+    # try:
+    #
+    #     row = cursor.fetchone()
+    #     uid = row[2]
+    #     steam_url = uid.split("id/")
+    #     steam_id = steam_url[2]
+    # except Exception, error:
+    #     print error
 
     if request.method == 'POST':
         game_list = []
 
         steam_id_list = request.POST.getlist('steam_id_list')
-        #user_steam_id = request.POST.get('steam_id')
-        #steam_id_list.append(user_steam_id)
+        user_steam_id = request.POST.get('steam_id')
+        steam_id_list.append(user_steam_id)
 
         i=0
         for steamid in steam_id_list:
@@ -88,7 +100,6 @@ def games(request):
 
                     else:
                         try:
-
                             price = requests.get("http://store.steampowered.com/api/appdetails/?appids=" +str(game.get('appid')) +  "&filters=price_overview")
                             price = price.json()
                             price = price.get(str(game.get('appid')))['data']['price_overview']['final']
@@ -171,3 +182,54 @@ def games(request):
 
 def friends(request):
     return render(request, 'friends.html')
+def calculator(request):
+    game_list = []
+    cursor = connection.cursor()
+    friend_info = []
+    if request.user.username :
+        user_name = request.user.username
+    else:
+        user_name = "user30"
+
+    cursor.execute("SELECT * FROM socialaccount_socialaccount ss, auth_user user "
+                   "WHERE ss.user_id=user.id AND user.username='"+user_name+"' ")
+
+    try:
+
+        row = cursor.fetchone()
+        uid = row[2]
+        steam_url = uid.split("id/")
+        steam_id = steam_url[2]
+    except:
+        print("an error occurred")
+    games = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=575D6F2C240C96CB1ADB5122D6675BF2&include_appinfo=1&steamid="+steam_id+"&format=json")
+    games = games.json()
+    total_price = 0
+    for game in games.get('response').get('games'):
+        try:
+            price = requests.get("http://store.steampowered.com/api/appdetails/?appids=" +str(game.get('appid')) +  "&filters=price_overview")
+            price = price.json()
+            price = price.get(str(game.get('appid')))['data']['price_overview']['final']
+            price = str(price)[0:-2] + "." + str(price)[-2:]
+            total_price = total_price + float(price)
+            playtime_forever = ((game.get('playtime_forever'))/60)
+            hourly = float(price) / playtime_forever
+        
+        except:
+            playtime_forever = "Not available"
+            hourly = "Not available"
+            price = "Price not available"
+        img_logo_url = "http://media.steampowered.com/steamcommunity/public/images/apps/"+str(game.get('appid'))+"/"+str(game.get('img_logo_url'))+".jpg"
+
+
+
+        game_list.append({
+            'name': game.get('name'),
+            'img_logo_url': img_logo_url,
+            'price' : price,
+            'hours' : playtime_forever,
+            'hourly' : hourly
+        })
+
+    
+    return render(request, 'calculator.html', {'game_list':game_list, 'total_price':total_price})
