@@ -20,7 +20,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-          {% if user %}
+          {% if user.username %}
             <a href="http://{{ request.get_host }}/accounts/logout">Logout</a>
           {% else %}
             <a href="/accounts/openid/login/?process=login&openid=http%3A%2F%2Fsteamcommunity.com%2Fopenid&next=%2Fcore%2F"><img src= "http://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png"></a>
