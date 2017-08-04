@@ -1,0 +1,49 @@
+
+{% include 'core/base.html' %}
+{% block content %}
+     <head>
+         {% load staticfiles %}
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <center><p>Hello {{ user.username }}!</p>
+    <h3>Steam Calculator</h3></center>
+    <center>
+    <h4> Current Library Cost: $ {{total_price}}</h4></center>
+    <div class = "col-md-2">
+    </div>
+    <div class = "col-md-8">
+    <table class = "table">
+    <thead>
+    <tr>
+    <th>Game</th>
+    <th>Current Price</th>
+    <th>Hours Played</th>
+    <th>$/hour playtime
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    {% for game in game_list %}
+    <td>{{game.name}}<br><img src = "{{game.img_logo_url}}">
+    </td>
+    <td>{{game.price}}
+    </td>
+    <td>{{game.hours}}
+    </td>
+    <td>
+     {{game.hourly}}
+     </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </div>
+    <div class = "col-md-2">
+    </div>
+
+    
+
+{% include 'core/footer.html' %}
+{% endblock %}
