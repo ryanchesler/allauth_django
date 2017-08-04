@@ -1,0 +1,95 @@
+{% include 'core/base.html' %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Game Info</title>
+
+         {% load staticfiles %}
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+
+        <h1>Games</h1>
+        <div class="col-md-2">
+        </div>
+        <div class = "col-md-8">
+        <div class="table">
+
+{#          <table class="table">#}
+{#              <thead>#}
+{#                <tr>#}
+{#                  <th>Game Name</th>#}
+{#                  <th>Count</th>#}
+{#                  <th>Image Logo URL</th>#}
+{#                </tr>#}
+{#              </thead>#}
+{#              <tbody>#}
+{#                {% for game in game_list %}#}
+{#                    <tr>#}
+{#                        <td>#}
+{#                            {{ game.name }} <br />#}
+{#                            <img src="{{ game.img_logo_url }}">#}
+{#                        </td>#}
+{#                         <td>{{ game.count }}</td>#}
+{#                        <td>#}
+{#                            {% for friend in game.friend_info %}#}
+{#                                <p>#}
+{#                                    {{ friend.friend_name }} <br>#}
+{#                                    <img src="{{ friend.avatar }}">#}
+{#                                </p>#}
+{#                            {% endfor %}#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#              </tbody>#}
+{#          </table>#}
+
+         {% for gl in game_list %}
+             <h3>Count: {{ gl.count }}</h3>
+            <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Game Name</th>
+                      <th>Count</th>
+                      <th>Image Logo URL</th>
+                      <th>Purchase on Steam</th>
+                      <th>Check Prices on G2A</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for game in gl.games %}
+                        <tr>
+                            <td>
+                                {{ game.name }} <br />
+                                <img src="{{ game.img_logo_url }}">
+                            </td>
+                             <td>{{ game.count }}</td>
+                            <td>
+                                {% for friend in game.friend_info %}
+                                    <a href="#" data-toggle="tooltip" title="{{ friend.friend_name }}">
+                                        <img src="{{ friend.avatar }}"></a>
+                                        
+                                    
+                                {% endfor %}
+                            </td>
+                            <td>
+                            <a href = "http://store.steampowered.com/app/{{ game.appid }}">{{game.price}} </a>
+                             </td>
+                             <td><a href="https://www.g2a.com/">G2A</a></td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+
+         {% endfor %}
+
+        </div>
+        </div>
+        </div>
+        <div class = "col-md-2">
+        </div>
+    </body>
+</html>

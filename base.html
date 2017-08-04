@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+{% include 'core/base.html' %}
+  <head>
+  {% load staticfiles %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+<div class="jumbotron">
+  <center><h2>Game Comparer will help you compare games with your friends</h2><br>
+  <p><a class="btn btn-primary btn-lg" href="/accounts/openid/login/?process=login&openid=http%3A%2F%2Fsteamcommunity.com%2Fopenid&next=%2Fcore%2F" role="button">Sign in to Steam</a></p>
+</div>
+</center>
+<div class="row">
+  <center>
+  <div class="col-md-2"></div>
+  <div class="col-md-2" style = "background: gray;padding:20px; min-height: 300px"><h3>Compare</h3><br><span class="glyphicon glyphicon-search" aria-hidden="true" style = "font-size: 50px"><br><h4>Trying to play with a group? Select the people off your friends list and it will show you what your options are on game night.</h4></span></div>
+  <div class="col-md-1"></div>
+ <div class="col-md-2" style = "background: gray;padding:20px; min-height: 300px"><h3>Metrics</h3><br><span class="glyphicon glyphicon-signal" aria-hidden="true" style = "font-size: 50px"><br><h4>Find out which of your friends has been swiping their mom's credit card and which ones are the sweatiest virgins</h4></span></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-2" style = "background: gray;padding:20px; min-height: 300px"><h3>Calculate</h3><br><span class="glyphicon glyphicon-usd" aria-hidden="true" style = "font-size: 50px"><br><h4>Find out the total worth of your account(coming soon)</h4></span></div>
+  <div class="col-md-2"></div>
+</div>
+</center>
+{% include 'core/footer.html' %}
+  </body>
+
+</html>
+

@@ -1,0 +1,92 @@
+
+{% include 'core/base.html' %}
+{% block content %}
+     <head>
+         {% load staticfiles %}
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <center><p>Hello {{ user.username }}!</p>
+    <h3>Select which friends you want to compare with</h3></center>
+
+    <div class="container">
+        <form action="/core/games/" method="post" >
+              {% csrf_token %}
+              <p align="center">
+                    <input type="submit" value="Compare Games" class = "btn" style = "background-color:#80a536">
+              </p>
+            <input type="hidden" name="steam_id" value="{{steam_id}}" />
+
+
+<div class = "btn-group" role = "group" data-toggle="buttons">
+                  {% for friend in friend_info %}
+
+                        <button type="button" class="btn btn-default col-md-4">
+                        <label>
+
+                        <p align = "left" style = "text-align:left; color: black; ">
+
+                                <img src="{{ friend.avatar }}" alt="..." class="img-thumbnail img-check" style>
+                                <input type="checkbox" name="steam_id_list" id="steam_id_list" value="{{ friend.steam_id }}" class="hidden" autocomplete="off">
+
+                          {{ friend.friend_name }}
+
+                        </p>
+
+                        </label>
+                        </button>
+
+
+                  {% endfor %}
+                  </div>
+
+                      </form>
+    </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function(e){
+            $(".img-check").click(function(){
+                $(this).toggleClass("check");
+            });
+
+            $('.markerDiv').click(function () {
+
+                  if ($(this).find('input:checkbox[name=steam_id_list]').is(":checked")) {
+
+                     $(this).find('input:checkbox[name=steam_id_list]').attr("checked", false);
+                     $(this).css("background", "#273b52");
+                     $(this).css("font-size", "12px");
+                     $(this).css("color", "lightgrey");
+                     $(this).css("font-weight", "nornal");
+                  }
+                  else {
+                      $(this).find('input:checkbox[name=steam_id_list]').prop("checked", true);
+                      $(this).css("background", "#286090");
+                      $(this).css("font-size", "14px");
+                      $(this).css("color", "white");
+                      $(this).css("font-weight", "bold");
+                  }
+
+
+            });
+
+
+        });
+        $("input[type='checkbox']").change(function(){
+
+            if($(this).is(":checked")){
+                $(this).parent().parent().addClass("changeColor");
+            }else{
+                $(this).parent().parent().removeClass("changeColor");
+            }
+        });
+
+
+    </script>
+
+{% include 'core/footer.html' %}
+{% endblock %}

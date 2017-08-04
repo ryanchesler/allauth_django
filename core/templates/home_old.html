@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+     <head>
+         {% load staticfiles %}
+         <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %} ">
+    </head>
+    <p>Hello {{ user.username }}!</p>
+
+    <div class="container">
+        <form action="/core/games/" method="post" >
+              {% csrf_token %}
+              <p align="center">
+                    <input type="submit" value="Says Compare">
+              </p>
+              <div class="row" style="background-color: #171a21;">
+
+                  {% for friend in friend_info %}
+                      <div class="col-sm-4 markerDiv">
+                        <p>
+                            <label class="btn btn-primary">
+                                <img src="{{ friend.avatar }}" alt="..." class="img-thumbnail img-check">
+                                <input type="checkbox" name="steam_id_list" id="steam_id_list" value="{{ friend.steam_id }}" class="hidden" autocomplete="off">
+                            </label>
+                          {{ friend.friend_name }}
+                        </p>
+                    </div>
+                  {% endfor %}
+
+              </div>
+        </form>
+    </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function(e){
+            $(".img-check").click(function(){
+                $(this).toggleClass("check");
+            });
+
+            $('.markerDiv').click(function () {
+
+                  if ($(this).find('input:checkbox[name=steam_id_list]').is(":checked")) {
+
+                     $(this).find('input:checkbox[name=steam_id_list]').attr("checked", false);
+                     $(this).css("background", "#1b6d85");
+                     $(this).css("font-size", "12px");
+                     $(this).css("color", "lightgrey");
+                     $(this).css("font-weight", "nornal");
+                  }
+                  else {
+                      $(this).find('input:checkbox[name=steam_id_list]').prop("checked", true);
+                      $(this).css("background", "#286090");
+                      $(this).css("font-size", "14px");
+                      $(this).css("color", "white");
+                      $(this).css("font-weight", "bold");
+                  }
+
+
+            });
+
+
+        });
+        $("input[type='checkbox']").change(function(){
+
+            if($(this).is(":checked")){
+                $(this).parent().parent().addClass("changeColor");
+            }else{
+                $(this).parent().parent().removeClass("changeColor");
+            }
+        });
+
+
+    </script>
+
+
+{% endblock %}
